@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
-const primaryColor = Color(0xFFC1A742);
-const secondaryColor = Color(0xFFF7F6F7);
-const bgColor = Color(0xFF0D1117);
-const lightColor = Color(0xFFFFFFFF);
-const lightSecondaryColor = Color(0xFFEFEFEF);
-const primaryLightColor = Color(0xFFD9D5F8);
-const primaryBrightColor = Color(0xFF6658dd);
-const successLightColor = Color(0xFFCFEEE7);
-const successBrightColor = Color(0xFF1abc9c);
-const infoLightColor = Color(0xFFD6F1F8);
-const infoBrightColor = Color(0xFF0dcaf0);
-const warningLightColor = Color(0xFFFEEDD4);
-const warningBrightColor = Color(0xFFffc107);
-const defaultPadding = 20.0;
-const defaultMargin = 24.0;
-const defaultRadius = 8.0;
-const defaultElevation = 1.0;
-const defaultButtonHeight = 50.0;
+abstract class ConstantUitls {
+  static const String appName = "Expense Tracker";
+  static const String version = "Version 1.0.0";
+  static const Color primaryColor = Color(0xFFC1A742);
+  static const Color bgColor = Color(0xFF0D1117);
+  static const Color lightColor = Colors.white;
+  static const Color lightBgColor = Color(0xFFEFEFEF);
+  static const double margin = 20;
+  static const double radius = 8;
+  static const double elevation = 1;
+
+  //method
+  static const String getMethod = "GET";
+  static const String postMethod = "POST";
+  static const String putMethod = "PUT";
+  static const String deleteMethod = "DELETE";
+}

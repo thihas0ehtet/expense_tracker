@@ -4,8 +4,12 @@ class Languages extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'mm_Uni': {
+          'home': 'မူလ',
+          'transactions': 'ငွေအဝင်အထွက်',
           'setting': 'ပြင်ဆင်ချက်',
           'reports': 'အစီရင်ခံစာများ',
+          'languages': 'ဘာသာစကားများ',
+          'accounts': 'အကောင့်များ',
           'categories': 'အမျိုးအစားများ',
           'category': 'အမျိုးအစား',
           "exitTitle": "ဆော့ဝဲမှာ ထွက်ခြင်း",
@@ -17,8 +21,12 @@ class Languages extends Translations {
           "ok": "ပြုလုပ်မည်",
         },
         'en_US': {
+          'home': 'Home',
+          'transactions': 'Transactions',
           'setting': 'Setting',
           'reports': 'Reports',
+          'languages': 'Languages',
+          'accounts': 'Accounts',
           'categories': 'Categories',
           'category': 'Category',
           "exitTitle": "Are you sure?",
