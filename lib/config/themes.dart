@@ -29,7 +29,7 @@ ThemeData buildDarkTheme() {
       primaryColor: ConstantUitls.primaryColor,
       appBarTheme: const AppBarTheme(
         backgroundColor: ConstantUitls.primaryColor,
-        elevation: 1,
+        elevation: ConstantUitls.elevation,
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       brightness: Brightness.dark,

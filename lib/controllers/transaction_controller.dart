@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 
 class TransactionController extends GetxController {
   List<TransactionModel> transactions = <TransactionModel>[].obs;
+  RxString selectedAccountId = "".obs;
+
   String tableName = Tables.transaction;
 
   @override
@@ -18,6 +20,32 @@ class TransactionController extends GetxController {
     List<Map<String, dynamic>> list = await db.query(tableName);
     transactions.assignAll(
         list.map((data) => TransactionModel.fromJson(data)).toList());
+  }
+
+  getTotalAmount(String type) {
+    double total = 0;
+    for (var transaction in transactions) {
+      if (transaction.type == type) {
+        if (selectedAccountId.isNotEmpty) {
+          if (transaction.accountId.toString() ==
+              selectedAccountId.toString()) {
+            total += transaction.amount;
+          }
+        } else {
+          total += transaction.amount;
+        }
+      }
+    }
+    return total;
+  }
+
+  getAllAmount() {
+    double totalIncome = getTotalAmount(ConstantUitls.income);
+    double totalExpense = getTotalAmount(ConstantUitls.expense);
+    if (totalIncome > totalExpense) {
+      return totalIncome - totalExpense;
+    }
+    return totalExpense - totalIncome;
   }
 
   Future<void> handleAction(String method,
@@ -40,5 +68,10 @@ class TransactionController extends GetxController {
     }
 
     getData();
+  }
+
+  onChangeAccount(value) {
+    selectedAccountId.value = value;
+    Get.back();
   }
 }

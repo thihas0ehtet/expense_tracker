@@ -1,5 +1,5 @@
 import 'package:expense/config/constants.dart';
-import 'package:expense/views/settings/data_backup.dart';
+import 'package:expense/views/payments/view.dart';
 import 'package:expense/views/views.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,11 @@ class Menu extends StatelessWidget {
         "name": 'categories'.tr,
         "icon": Icons.widgets,
         "action": () => Get.to(() => CategoriesView()),
+      },
+      {
+        "name": 'payments'.tr,
+        "icon": Icons.payment,
+        "action": () => Get.to(() => PaymentView()),
       },
       {
         "name": 'languages'.tr,
@@ -51,7 +56,7 @@ class Menu extends StatelessWidget {
       {
         "name": 'Data Backup / Restore',
         "icon": Icons.settings_backup_restore,
-        "action": () => Get.to(() => const DataBackup()),
+        "action": () => Get.to(() {}),
       }
     ];
 

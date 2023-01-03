@@ -1,5 +1,6 @@
 import 'package:expense/config/languages.dart';
 import 'package:expense/config/themes.dart';
+import 'package:expense/controllers/controllers.dart';
 import 'package:expense/services/database_service.dart';
 import 'package:expense/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Get.put(TransactionController());
   await DatabaseService.initDB();
   runApp(const MyApp());
 }

@@ -4,7 +4,7 @@ class TransactionModel {
   final int? id;
   final String type;
   final int accountId;
-  final int categoryId;
+  final String category;
   final double amount;
   final String date;
   final Uint8List? image;
@@ -14,7 +14,7 @@ class TransactionModel {
       {this.id,
       required this.type,
       required this.accountId,
-      required this.categoryId,
+      required this.category,
       required this.amount,
       required this.date,
       this.image,
@@ -24,7 +24,7 @@ class TransactionModel {
       id: data['id'],
       type: data['type'],
       accountId: data['accountId'],
-      categoryId: data['categoryId'],
+      category: data['category'],
       amount: data['amount'].toDouble(),
       date: data['date'],
       image: data['image'],
@@ -34,7 +34,7 @@ class TransactionModel {
         "id": id,
         "type": type,
         "accountId": accountId,
-        "categoryId": categoryId,
+        "category": category,
         "amount": amount,
         "date": date,
         "image": image,

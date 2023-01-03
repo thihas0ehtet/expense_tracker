@@ -1,26 +1,21 @@
 import 'package:expense/config/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 Widget InputField(
   BuildContext context, {
   String? label,
-  String? placeholder,
   TextEditingController? controller,
   bool enabled = true,
   Icon? leftIcon,
   TextInputType? inputType,
   Widget? widget,
   FocusNode? focusNode,
-  bool autoFocus = false,
-  bool? validate = true,
   bool? isPassword = false,
   bool? showPassword,
   GestureTapCallback? handleShowPassword,
-  bool? isOnlyAllowEnglishWord = false,
+  GestureTapCallback? onEditingComplete,
   bool disableMargin = false,
-  String? errorText,
 }) {
   Size size = MediaQuery.of(context).size;
   return Container(
@@ -64,16 +59,10 @@ Widget InputField(
                       TextField(
                         style: const TextStyle(height: 1),
                         keyboardType: inputType,
-                        inputFormatters: isOnlyAllowEnglishWord ?? false
-                            ? <TextInputFormatter>[
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[0-9a-zA-Z]")),
-                              ]
-                            : [], //
                         enabled: enabled,
                         controller: controller,
                         focusNode: focusNode,
-                        autofocus: autoFocus,
+                        onEditingComplete: onEditingComplete,
                         obscureText: isPassword! ? !showPassword! : false,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -98,12 +87,6 @@ Widget InputField(
             ],
           ),
         ),
-        validate!
-            ? Container()
-            : Text(
-                errorText.toString(),
-                style: const TextStyle(color: Colors.red),
-              )
       ],
     ),
   );

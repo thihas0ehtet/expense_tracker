@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart';
 abstract class Tables {
   static String account = "account";
   static String category = "category";
+  static String payment = "payment";
   static String transaction = "transactionTable";
 }
 
@@ -42,11 +43,19 @@ class DatabaseService {
     """);
 
     await database.execute("""
+      CREATE TABLE ${Tables.payment} (
+        $id ,
+        name TEXT,
+        $createdAt
+      )
+    """);
+
+    await database.execute("""
       CREATE TABLE ${Tables.transaction} (
         $id ,
         type TEXT,
         accountId INTEGER,
-        categoryId INTEGER,
+        category TEXT,
         amount REAL,
         image BLOB,
         date TEXT,

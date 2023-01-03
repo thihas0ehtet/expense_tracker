@@ -1,4 +1,3 @@
-import 'package:expense/config/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -52,20 +51,6 @@ abstract class Utils {
     });
   }
 
-  static handleDeleteConfirm(String label, Function confirmAction) {
-    Get.defaultDialog(
-      title: "Delete",
-      radius: ConstantUitls.radius,
-      buttonColor: ConstantUitls.primaryColor,
-      confirmTextColor: Colors.white,
-      content: Center(
-        child: Text('Are you sure to delete $label?'),
-      ),
-      onCancel: () => {},
-      onConfirm: () => {Get.back(), confirmAction()},
-    );
-  }
-
   static handleShowBottomSheet(context, Widget child) => showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -73,4 +58,36 @@ abstract class Utils {
             padding: MediaQuery.of(context).viewInsets,
             child: child,
           ));
+
+  static handleDeleteConfirm(String label, Function confirmAction) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text(
+          "Delete",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'Are you sure to delete $label?',
+          style: TextStyle(
+            color: Colors.grey.shade600,
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: Text("Close",
+                style: TextStyle(
+                    color: Colors.grey.shade600, fontWeight: FontWeight.bold)),
+            onPressed: () => Get.back(),
+          ),
+          TextButton(
+            child: const Text(
+              "Delete",
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+            onPressed: () => {Get.back(), confirmAction()},
+          ),
+        ],
+      ),
+    );
+  }
 }

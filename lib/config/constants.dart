@@ -11,6 +11,9 @@ abstract class ConstantUitls {
   static const double radius = 8;
   static const double elevation = 1;
 
+  static const String expense = "Expense";
+  static const String income = "Income";
+
   //method
   static const String getMethod = "GET";
   static const String postMethod = "POST";

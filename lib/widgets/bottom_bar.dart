@@ -30,7 +30,7 @@ class _BottomBarState extends State<BottomBar> {
     final pages = <Widget>[
       const HomeView(),
       TransactionsView(),
-      const ReportsView(),
+      // const ReportsView(),
       const SettingsView(),
     ];
     final bottomNavBarItems = <BottomNavigationBarItem>[
@@ -38,9 +38,9 @@ class _BottomBarState extends State<BottomBar> {
           icon: const Icon(CupertinoIcons.home), label: 'home'.tr),
       BottomNavigationBarItem(
           icon: const Icon(Icons.receipt_long), label: 'transactions'.tr),
-      BottomNavigationBarItem(
-          icon: const Icon(CupertinoIcons.chart_bar_square),
-          label: 'reports'.tr),
+      // BottomNavigationBarItem(
+      //     icon: const Icon(CupertinoIcons.chart_bar_square),
+      //     label: 'reports'.tr),
       BottomNavigationBarItem(
           icon: const Icon(Icons.settings), label: 'setting'.tr),
     ];
