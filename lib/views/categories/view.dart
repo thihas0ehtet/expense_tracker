@@ -26,7 +26,7 @@ class CategoriesView extends StatelessWidget {
             IconButton(
                 splashRadius: 20,
                 onPressed: showForm,
-                icon: const Icon(Icons.add_circle_outline))
+                icon: const Icon(Icons.add_circle_outline)),
           ],
         ),
         body: Obx(() {
@@ -54,23 +54,15 @@ class CategoriesView extends StatelessWidget {
                       width: 0.001,
                     ),
                     columns: [
-                      const DataColumn(
-                          label: Expanded(
-                              child: Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          'No.',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ))),
                       DataColumn(
                           label: Expanded(
-                              child: Text(
-                        'category'.tr,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                              child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Text(
+                          'category'.tr,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ))),
                       const DataColumn(
@@ -85,15 +77,45 @@ class CategoriesView extends StatelessWidget {
                         .map(
                           (element) => DataRow(
                             cells: [
-                              DataCell(Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                    (controller.categories.indexOf(element) + 1)
-                                        .toString()),
+                              DataCell(Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Text(element.name),
                               )),
-                              DataCell(Text(
-                                element.name,
-                              )),
+
+                              // DataCell(Container(
+                              //   margin: const EdgeInsets.only(right: 10),
+                              //   child: Align(
+                              //     alignment: Alignment.centerRight,
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.end,
+                              //       children: [
+                              //         IconButton(
+                              //             onPressed: () =>
+                              //                 showForm(category: element),
+                              //             splashRadius: 20,
+                              //             icon: const Icon(
+                              //               Icons.edit,
+                              //               size: 18,
+                              //               color: ConstantUitls.primaryColor,
+                              //             )),
+                              //         IconButton(
+                              //             onPressed: () =>
+                              //                 Utils.handleDeleteConfirm(
+                              //                     element.name,
+                              //                     () => controller.handleAction(
+                              //                         ConstantUitls
+                              //                             .deleteMethod,
+                              //                         id: element.id ?? 0)),
+                              //             splashRadius: 20,
+                              //             icon: const Icon(
+                              //               CupertinoIcons.trash,
+                              //               size: 18,
+                              //               color: Colors.red,
+                              //             ))
+                              //       ],
+                              //     ),
+                              //   ),
+                              // )),
                               DataCell(Container(
                                 margin: const EdgeInsets.only(right: 10),
                                 child: Align(
@@ -101,29 +123,73 @@ class CategoriesView extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      IconButton(
-                                          onPressed: () =>
-                                              showForm(category: element),
-                                          splashRadius: 20,
-                                          icon: const Icon(
-                                            Icons.edit,
-                                            size: 18,
-                                            color: ConstantUitls.primaryColor,
-                                          )),
-                                      IconButton(
-                                          onPressed: () =>
-                                              Utils.handleDeleteConfirm(
-                                                  element.name,
-                                                  () => controller.handleAction(
-                                                      ConstantUitls
-                                                          .deleteMethod,
-                                                      id: element.id ?? 0)),
-                                          splashRadius: 20,
-                                          icon: const Icon(
-                                            CupertinoIcons.trash,
-                                            size: 18,
-                                            color: Colors.red,
-                                          ))
+                                      SizedBox(
+                                        width: 30,
+                                        child: PopupMenuButton(
+                                            padding: const EdgeInsets.all(0),
+                                            splashRadius: 20,
+                                            onSelected: (value) {
+                                              if (value == 1) {
+                                                showForm(category: element);
+                                              } else {
+                                                Utils.handleDeleteConfirm(
+                                                    element.name,
+                                                    () =>
+                                                        controller.handleAction(
+                                                            ConstantUitls
+                                                                .deleteMethod,
+                                                            id: element.id ??
+                                                                0));
+                                              }
+                                            },
+                                            icon: Icon(
+                                              Icons.more_vert,
+                                              color: Colors.grey.shade600,
+                                            ),
+                                            itemBuilder: (context) => [
+                                                  PopupMenuItem(
+                                                    value: 1,
+                                                    child: Row(
+                                                      children: const [
+                                                        Icon(
+                                                          Icons.edit,
+                                                          size: 20,
+                                                          color: ConstantUitls
+                                                              .primaryColor,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Text(
+                                                          "Edit",
+                                                          style: TextStyle(
+                                                              fontSize: 15),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  PopupMenuItem(
+                                                    value: 2,
+                                                    child: Row(
+                                                      children: const [
+                                                        Icon(
+                                                          CupertinoIcons.trash,
+                                                          size: 20,
+                                                          color: Colors.red,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Text(
+                                                          "Delete",
+                                                          style: TextStyle(
+                                                              fontSize: 15),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
+                                                ]),
+                                      ),
                                     ],
                                   ),
                                 ),

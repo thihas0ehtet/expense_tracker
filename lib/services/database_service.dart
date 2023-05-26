@@ -55,6 +55,7 @@ class DatabaseService {
         $id ,
         type TEXT,
         accountId INTEGER,
+        payment TEXT,
         category TEXT,
         amount REAL,
         image BLOB,

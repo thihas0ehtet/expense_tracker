@@ -26,7 +26,7 @@ class AccountsView extends StatelessWidget {
             IconButton(
                 splashRadius: 20,
                 onPressed: showForm,
-                icon: const Icon(Icons.add_circle_outline))
+                icon: const Icon(Icons.add_circle_outline)),
           ],
         ),
         body: Obx(() {
@@ -59,20 +59,28 @@ class AccountsView extends StatelessWidget {
                               child: Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: Text(
-                          'No.',
+                          'Account',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ))),
-                      DataColumn(
-                          label: Expanded(
-                              child: Text(
-                        'Account',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ))),
+                      // DataColumn(
+                      //     label: Expanded(
+                      //         child: Text(
+                      //   'Income',
+                      //   style: TextStyle(
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ))),
+                      // DataColumn(
+                      //     label: Expanded(
+                      //         child: Text(
+                      //   'Expense',
+                      //   style: TextStyle(
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ))),
                       DataColumn(
                           label: Expanded(
                               child: Text(
@@ -85,15 +93,17 @@ class AccountsView extends StatelessWidget {
                         .map(
                           (element) => DataRow(
                             cells: [
-                              DataCell(Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                    (controller.accounts.indexOf(element) + 1)
-                                        .toString()),
+                              DataCell(Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Text(element.name),
                               )),
-                              DataCell(Text(
-                                element.name,
-                              )),
+
+                              // const DataCell(Text(
+                              //   "0",
+                              // )),
+                              // const DataCell(Text(
+                              //   "0",
+                              // )),
                               // DataCell(Container(
                               //   margin: const EdgeInsets.only(right: 10),
                               //   child: Align(

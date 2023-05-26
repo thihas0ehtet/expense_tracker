@@ -1,5 +1,6 @@
 import 'package:expense/config/constants.dart';
 import 'package:expense/views/payments/view.dart';
+import 'package:expense/views/settings/data_backup.dart';
 import 'package:expense/views/views.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class Menu extends StatelessWidget {
       {
         "name": 'Data Backup / Restore',
         "icon": Icons.settings_backup_restore,
-        "action": () => Get.to(() {}),
+        "action": () => Get.to(() => const DataBackup()),
       }
     ];
 

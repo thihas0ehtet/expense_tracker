@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 abstract class Utils {
   static String currencyFormat(String data) {
@@ -89,5 +91,57 @@ abstract class Utils {
         ],
       ),
     );
+  }
+
+  static selectImageSource() async {
+    final result = await Get.bottomSheet(Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
+      ),
+      child: Wrap(
+        alignment: WrapAlignment.end,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: [
+          ListTile(
+              leading: const Icon(Icons.camera),
+              title: const Text('Camera'),
+              onTap: () {
+                Get.back(result: ImageSource.camera);
+              }),
+          ListTile(
+              leading: const Icon(Icons.image),
+              title: const Text('Gallery'),
+              onTap: () {
+                Get.back(result: ImageSource.gallery);
+              }),
+        ],
+      ),
+    ));
+
+    return result;
+  }
+
+  static pickImage(ImageSource imageSource) async {
+    final ImagePicker imagePicker = ImagePicker();
+    final XFile? pickedFile = await imagePicker.pickImage(source: imageSource);
+
+    if (pickedFile != null) {
+      return pickedFile;
+    }
+  }
+
+  static Future<bool> requestPermission(Permission permission) async {
+    if (await permission.isGranted) {
+      return true;
+    } else {
+      var result = await permission.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 }

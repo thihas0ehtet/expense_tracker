@@ -14,7 +14,11 @@ dependencies:
   charts_flutter: ^0.12.0
   excel: any
   intl:
+  image_picker: ^0.8.4+11
   cupertino_icons: ^1.0.2
+  file_picker: ^5.2.5
+  path_provider: ^2.0.12
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

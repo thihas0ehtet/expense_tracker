@@ -1,14 +1,19 @@
+import 'dart:io';
 import 'package:expense/config/constants.dart';
 import 'package:expense/controllers/controllers.dart';
 import 'package:expense/models/models.dart';
+import 'package:expense/models/payment_model.dart';
 import 'package:expense/utils/utils.dart';
 import 'package:expense/widgets/form/input_select.dart';
 import 'package:expense/widgets/selector/account_selector.dart';
 import 'package:expense/widgets/selector/category_selector.dart';
+import 'package:expense/widgets/selector/payment_selector.dart';
+import 'package:expense/widgets/type_button.dart';
 import 'package:expense/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
@@ -23,15 +28,18 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   TextEditingController account = TextEditingController();
   TextEditingController category = TextEditingController();
+  TextEditingController payment = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController date = TextEditingController();
   TextEditingController note = TextEditingController();
   AccountModel? selectedAccount;
   CategoryModel? selectedCategory;
+  PaymentModel? selectedPayment;
   final TransactionController controller = Get.put(TransactionController());
   final AccountController accountController = Get.put(AccountController());
   String transactionType = "Expense";
   DateTime selectedDate = DateTime.now();
+  var image;
 
   @override
   void initState() {
@@ -41,16 +49,18 @@ class _TransactionFormState extends State<TransactionForm> {
       account.text =
           accountController.getAccountName(widget.transaction?.accountId ?? 0);
       category.text = widget.transaction?.category.toString() ?? "";
+      payment.text = widget.transaction?.payment.toString() ?? "";
       amount.text = widget.transaction?.amount.toString() ?? "";
       date.text = widget.transaction?.date ?? "";
       note.text = widget.transaction?.note ?? "";
       selectedDate =
           DateFormat('yyyy-MM-dd').parse(widget.transaction?.date ?? "");
+      image = widget.transaction?.image;
     }
   }
 
   submitAction() async {
-    if (account.text.isEmpty) {
+    if (account.text.isEmpty || amount.text.isEmpty || category.text.isEmpty) {
       Utils.showMessage("Fail", "Please fill data!", color: Colors.red);
     }
 
@@ -60,6 +70,7 @@ class _TransactionFormState extends State<TransactionForm> {
           accountId: selectedAccount?.id ?? 0,
           category: category.text,
           amount: double.parse(amount.text),
+          payment: payment.text,
           date: DateFormat('yyyy-MM-dd').format(selectedDate),
           note: note.text);
       await controller.handleAction(ConstantUitls.postMethod,
@@ -73,6 +84,7 @@ class _TransactionFormState extends State<TransactionForm> {
               : widget.transaction!.accountId,
           category: category.text,
           amount: double.parse(amount.text),
+          payment: payment.text,
           date: DateFormat('yyyy-MM-dd').format(selectedDate),
           note: note.text);
       await controller.handleAction(ConstantUitls.putMethod,
@@ -93,6 +105,13 @@ class _TransactionFormState extends State<TransactionForm> {
     selectedCategory = selectedItem;
     setState(() {});
     category.text = selectedItem.name;
+    Navigator.of(context).pop();
+  }
+
+  handleSelectPayment(PaymentModel selectedItem) {
+    selectedPayment = selectedItem;
+    setState(() {});
+    payment.text = selectedItem.name;
     Navigator.of(context).pop();
   }
 
@@ -141,6 +160,7 @@ class _TransactionFormState extends State<TransactionForm> {
                       child: TypeButton(
                           title: "Income",
                           transactionType: transactionType,
+                          radiusPostion: 'end',
                           selectedAction: () {
                             transactionType = "Income";
                             setState(() {});
@@ -152,7 +172,7 @@ class _TransactionFormState extends State<TransactionForm> {
               height: 15,
             ),
             InputSelect(
-              label: "Account",
+              label: "Account *",
               controller: account,
               selectAction: () => AccountSelector(
                 selectAction: handleSelectAccount,
@@ -165,7 +185,7 @@ class _TransactionFormState extends State<TransactionForm> {
               },
             ),
             InputSelect(
-              label: "Category",
+              label: "Category *",
               controller: category,
               selectAction: () => CategorySelector(
                 selectAction: handleSelectCategory,
@@ -181,7 +201,20 @@ class _TransactionFormState extends State<TransactionForm> {
               context,
               controller: amount,
               inputType: TextInputType.number,
-              label: "Amount".tr,
+              label: "Amount *",
+            ),
+            InputSelect(
+              label: "Payment",
+              controller: payment,
+              selectAction: () => PaymentSelector(
+                selectAction: handleSelectPayment,
+              ),
+              showCancelButton: selectedPayment != null,
+              cancelAction: () {
+                selectedPayment = null;
+                payment.text = "";
+                setState(() {});
+              },
             ),
             InkWell(
               onTap: () {
@@ -209,6 +242,119 @@ class _TransactionFormState extends State<TransactionForm> {
                 maxLines: 3,
                 controller: note,
               ),
+            ),
+            const SizedBox(
+              width: double.infinity,
+              child: Text(
+                "Receipt image",
+                style: TextStyle(
+                  color: Color(0xff51515b),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            image != null
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    padding: const EdgeInsets.only(bottom: 5),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(ConstantUitls.radius)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(ConstantUitls.radius)),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 170,
+                                child: Image.memory(
+                                  image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                                top: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    image = null;
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(
+                                              ConstantUitls.radius),
+                                          bottomLeft: Radius.circular(
+                                              ConstantUitls.radius)),
+                                    ),
+                                    width: 30,
+                                    height: 30,
+                                    child: const SizedBox(
+                                      width: 30,
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () async {
+                      final imageSource = await Utils.selectImageSource();
+
+                      XFile? pickedImage = await Utils.pickImage(imageSource);
+
+                      image = File(pickedImage!.path).readAsBytesSync();
+                      setState(() {});
+                    },
+                    child: Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        height: MediaQuery.of(context).size.width * 0.4,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(ConstantUitls.radius),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                            width: 1,
+                          ),
+                          color: Get.isDarkMode ? Colors.grey : Colors.white,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.upload,
+                              size: 20,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text("Add receipt image",
+                                style: TextStyle(
+                                  color: Color(0xff51515b),
+                                  fontSize: 13,
+                                ))
+                          ],
+                        )),
+                  ),
+            const SizedBox(
+              height: 15,
             ),
             SizedBox(
               width: double.infinity,
@@ -238,45 +384,5 @@ class _TransactionFormState extends State<TransactionForm> {
         selectedDate = value;
       });
     });
-  }
-}
-
-class TypeButton extends StatelessWidget {
-  final String title;
-  final String transactionType;
-  final Function selectedAction;
-
-  const TypeButton(
-      {Key? key,
-      required this.title,
-      required this.transactionType,
-      required this.selectedAction})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => selectedAction(),
-      child: Container(
-        decoration: BoxDecoration(
-            color: transactionType == title ? ConstantUitls.primaryColor : null,
-            borderRadius: transactionType == "Expense"
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10))
-                : const BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10))),
-        child: Align(
-            alignment: Alignment.center,
-            child: Text(
-              title,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: transactionType == title ? Colors.white : null),
-            )),
-      ),
-    );
   }
 }

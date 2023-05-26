@@ -7,6 +7,7 @@ class TransactionModel {
   final String category;
   final double amount;
   final String date;
+  final String? payment;
   final Uint8List? image;
   final String? note;
 
@@ -17,6 +18,7 @@ class TransactionModel {
       required this.category,
       required this.amount,
       required this.date,
+      this.payment,
       this.image,
       this.note});
 
@@ -27,6 +29,7 @@ class TransactionModel {
       category: data['category'],
       amount: data['amount'].toDouble(),
       date: data['date'],
+      payment: data['payment'],
       image: data['image'],
       note: data['note']);
 
@@ -36,6 +39,7 @@ class TransactionModel {
         "accountId": accountId,
         "category": category,
         "amount": amount,
+        "payment": payment,
         "date": date,
         "image": image,
         "note": note,
